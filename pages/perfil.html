@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - CineFlix</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .profile-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            padding: 8rem 0 4rem;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #e50914, #ff4757);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .profile-name {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-email {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .profile-sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            height: fit-content;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(229, 9, 20, 0.2);
+            color: #e50914;
+        }
+        
+        .profile-main {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section h3 {
+            color: #e50914;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #e50914;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-group input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #e50914, #ff4757);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e50914;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .back-home {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #e50914;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 0 1rem;
+            }
+            
+            .profile-sidebar {
+                order: 2;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .sidebar-menu li {
+                margin: 0;
+            }
+            
+            .sidebar-menu a {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i>
+        Voltar ao CineFlix
+    </a>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1 class="profile-name" id="profileName">Usuário</h1>
+            <p class="profile-email" id="profileEmail">usuario@email.com</p>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-sidebar">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="#" onclick="showSection('overview')" class="active" id="menu-overview">
+                            <i class="fas fa-chart-line"></i>
+                            Visão Geral
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('personal')" id="menu-personal">
+                            <i class="fas fa-user-edit"></i>
+                            Dados Pessoais
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('security')" id="menu-security">
+                            <i class="fas fa-shield-alt"></i>
+                            Segurança
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="showSection('preferences')" id="menu-preferences">
+                            <i class="fas fa-cog"></i>
+                            Preferências
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="profile-main">
+                <!-- Visão Geral -->
+                <div id="section-overview" class="section active">
+                    <h3>Visão Geral da Conta</h3>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="favoriteCount">0</div>
+                            <div class="stat-label">Filmes Favoritos</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="watchTime">0h</div>
+                            <div class="stat-label">Tempo Assistido</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="accountAge">0</div>
+                            <div class="stat-label">Dias no CineFlix</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Membro desde</label>
+                        <input type="text" id="memberSince" disabled>
+                    </div>
+                </div>
+
+                <!-- Dados Pessoais -->
+                <div id="section-personal" class="section">
+                    <h3>Dados Pessoais</h3>
+                    
+                    <form id="personalForm">
+                        <div class="form-group">
+                            <label for="firstName">Nome</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Sobrenome</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="birthDate">Data de Nascimento</label>
+                            <input type="date" id="birthDate" name="birthDate" required>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Salvar Alterações</button>
+                        <button type="button" class="btn-secondary" onclick="loadUserData()">Cancelar</button>
+                    </form>
+                </div>
+
+                <!-- Segurança -->
+                <div id="section-security" class="section">
+                    <h3>Segurança da Conta</h3>
+                    
+                    <form id="securityForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Senha Atual</label>
+                            <input type="password" id="currentPassword" name="currentPassword" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPassword">Nova Senha</label>
+                            <input type="password" id="newPassword" name="newPassword" required minlength="6">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Confirmar Nova Senha</label>
+                            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Alterar Senha</button>
+                    </form>
+                </div>
+
+                <!-- Preferências -->
+                <div id="section-preferences" class="section">
+                    <h3>Preferências</h3>
+                    
+                    <form id="preferencesForm">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="newsletter" style="width: auto; margin-right: 0.5rem;">
+                                Receber novidades por email
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="autoplay" style="width: auto; margin-right: 0.5rem;">
+                                Reprodução automática de vídeos
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Salvar Preferências</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        // Verificar se usuário está logado
+        if (!userManager.isLoggedIn()) {
+            window.location.href = 'login.html';
+        }
+
+        // Carregar dados do usuário
+        function loadUserData() {
+            const user = userManager.getCurrentUser();
+            if (user) {
+                // Header
+                document.getElementById('profileName').textContent = `${user.firstName} ${user.lastName}`;
+                document.getElementById('profileEmail').textContent = user.email;
+                
+                // Dados pessoais
+                document.getElementById('firstName').value = user.firstName;
+                document.getElementById('lastName').value = user.lastName;
+                document.getElementById('email').value = user.email;
+                document.getElementById('birthDate').value = user.birthDate;
+                
+                // Preferências
+                document.getElementById('newsletter').checked = user.newsletter || false;
+                document.getElementById('autoplay').checked = user.preferences?.autoplay || false;
+                
+                // Estatísticas
+                document.getElementById('favoriteCount').textContent = user.preferences?.favorites?.length || 0;
+                document.getElementById('memberSince').value = new Date(user.createdAt).toLocaleDateString('pt-BR');
+                
+                // Calcular dias desde criação
+                const created = new Date(user.createdAt);
+                const now = new Date();
+                const days = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+                document.getElementById('accountAge').textContent = days;
+            }
+        }
+
+        // Mostrar seção
+        function showSection(sectionName) {
+            // Esconder todas as seções
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remover classe active dos menus
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Mostrar seção selecionada
+            document.getElementById(`section-${sectionName}`).classList.add('active');
+            document.getElementById(`menu-${sectionName}`).classList.add('active');
+        }
+
+        // Formulário de dados pessoais
+        document.getElementById('personalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const user = userManager.getCurrentUser();
+            const formData = new FormData(this);
+            
+            const updates = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                birthDate: formData.get('birthDate')
+            };
+            
+            const result = userManager.updateProfile(user.id, updates);
+            
+            if (result.success) {
+                alert('Dados atualizados com sucesso!');
+                loadUserData();
+            } else {
+                alert('Erro: ' + result.message);
+            }
+        });
+
+        // Formulário de segurança
+        document.getElementById('securityForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const user = userManager.getCurrentUser();
+            const formData = new FormData(this);
+            
+            const currentPassword = formData.get('currentPassword');
+            const newPassword = formData.get('newPassword');
+            const confirmNewPassword = formData.get('confirmNewPassword');
+            
+            if (newPassword !== confirmNewPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+            
+            const result = userManager.changePassword(user.id, currentPassword, newPassword);
+            
+            if (result.success) {
+                alert('Senha alterada com sucesso!');
+                this.reset();
+            } else {
+                alert('Erro: ' + result.message);
+            }
+        });
+
+        // Formulário de preferências
+        document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const user = userManager.getCurrentUser();
+            const formData = new FormData(this);
+            
+            const updates = {
+                newsletter: formData.get('newsletter') === 'on',
+                preferences: {
+                    ...user.preferences,
+                    autoplay: formData.get('autoplay') === 'on'
+                }
+            };
+            
+            const result = userManager.updateProfile(user.id, updates);
+            
+            if (result.success) {
+                alert('Preferências salvas com sucesso!');
+            } else {
+                alert('Erro: ' + result.message);
+            }
+        });
+
+        // Carregar dados na inicialização
+        loadUserData();
+    </script>
+</body>
+</html>

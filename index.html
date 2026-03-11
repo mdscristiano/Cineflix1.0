@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineFlix - Assista Filmes Online</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <span>CineFlix</span>
+                
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home" class="nav-link active">Início</a></li>
+                    <li><a href="#movies" class="nav-link">Filmes</a></li>
+                    <li><a href="#series" class="nav-link">Séries</a></li>
+                    <li><a href="#genres" class="nav-link">Gêneros</a></li>
+                    <li><a href="#favorites" class="nav-link">Favoritos</a></li>
+                </ul>
+            </nav>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Buscar filmes...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="auth-buttons" id="authButtons">
+                <a href="pages/login.html" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </a>
+                <a href="pages/cadastro.html" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Cadastrar
+                </a>
+            </div>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-avatar" onclick="toggleUserDropdown()">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Usuário</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#" onclick="showProfile()">
+                        <i class="fas fa-user"></i> Meu Perfil
+                    </a>
+                    <a href="#favorites" onclick="showFavorites()">
+                        <i class="fas fa-heart"></i> Meus Favoritos
+                    </a>
+                    <a href="#" onclick="showHistory()">
+                        <i class="fas fa-history"></i> Histórico
+                    </a>
+                    <a href="#" onclick="showSettings()">
+                        <i class="fas fa-cog"></i> Configurações
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" onclick="logout()" class="logout-link">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Bem-vindo ao CineFlix</h1>
+            <p>Assista aos melhores filmes e séries em qualidade HD</p>
+            <button class="btn-primary" onclick="scrollToMovies()">
+                <i class="fas fa-play"></i> Começar a Assistir
+            </button>
+        </div>
+        <div class="hero-video">
+            <video autoplay muted loop>
+                <source src="https://sample-videos.com/zip/10/mp4/480/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <!-- Featured Movies -->
+    <section class="featured" id="movies">
+        <div class="container">
+            <h2>Filmes em Destaque</h2>
+            <div class="movies-grid" id="moviesGrid">
+                <!-- Movies will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Genres Section -->
+    <section class="genres" id="genres">
+        <div class="container">
+            <h2>Explorar por Gênero</h2>
+            <div class="genres-list">
+                <button class="genre-btn active" data-genre="all">Todos</button>
+                <button class="genre-btn" data-genre="action">Ação</button>
+                <button class="genre-btn" data-genre="comedy">Comédia</button>
+                <button class="genre-btn" data-genre="drama">Drama</button>
+                <button class="genre-btn" data-genre="horror">Terror</button>
+                <button class="genre-btn" data-genre="romance">Romance</button>
+                <button class="genre-btn" data-genre="sci-fi">Ficção Científica</button>
+                <button class="genre-btn" data-genre="thriller">Suspense</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Player Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="video-container">
+                <video id="moviePlayer" controls>
+                    <source src="" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+            </div>
+            <div class="movie-details">
+                <h3 id="movieTitle">Título do Filme</h3>
+                <p id="movieDescription">Descrição do filme...</p>
+                <div class="movie-meta">
+                    <span id="movieYear">2023</span>
+                    <span id="movieGenre">Ação</span>
+                    <span id="movieDuration">120 min</span>
+                </div>
+                <div class="movie-actions">
+                    <button class="btn-favorite" onclick="toggleFavorite()">
+                        <i class="far fa-heart"></i> Favoritar
+                    </button>
+                    <button class="btn-share" onclick="shareMovie()">
+                        <i class="fas fa-share"></i> Compartilhar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CineFlix</h3>
+                    <p>Sua plataforma de streaming favorita</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#movies">Filmes</a></li>
+                        <li><a href="#series">Séries</a></li>
+                        <li><a href="#genres">Gêneros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p><i class="fas fa-envelope"></i> contato@cineflix.com</p>
+                    <p><i class="fas fa-phone"></i> (11) 99999-9999</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CineFlix. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api-service.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
